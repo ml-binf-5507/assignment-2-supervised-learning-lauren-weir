@@ -13,6 +13,27 @@ from sklearn.model_selection import GridSearchCV
 
 def train_elasticnet_grid(X_train, y_train, l1_ratios, alphas):
 
+    """
+    Train ElasticNet models over a grid of hyperparameters.
+    
+    Parameters
+    ----------
+    X_train : np.ndarray or pd.DataFrame
+        Training feature matrix
+    y_train : np.ndarray or pd.Series
+        Training target vector
+    l1_ratios : list or np.ndarray
+        L1 ratio values to test (0 = L2 only, 1 = L1 only)
+    alphas : list or np.ndarray
+        Regularization strength values to test
+        
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame with columns: ['l1_ratio', 'alpha', 'r2_score', 'model']
+        Contains R² scores for each parameter combination on training data
+    """
+
     param_grid = {
     'l1_ratio': l1_ratios,
     'alpha': alphas
@@ -41,54 +62,7 @@ def train_elasticnet_grid(X_train, y_train, l1_ratios, alphas):
     return results_df
 
 
-    """
-    Train ElasticNet models over a grid of hyperparameters.
-    
-    Parameters
-    ----------
-    X_train : np.ndarray or pd.DataFrame
-        Training feature matrix
-    y_train : np.ndarray or pd.Series
-        Training target vector
-    l1_ratios : list or np.ndarray
-        L1 ratio values to test (0 = L2 only, 1 = L1 only)
-    alphas : list or np.ndarray
-        Regularization strength values to test
-        
-    Returns
-    -------
-    pd.DataFrame
-        DataFrame with columns: ['l1_ratio', 'alpha', 'r2_score', 'model']
-        Contains R² scores for each parameter combination on training data
-    """
-    # TODO: Implement grid search
-    # - Create results list
-    # - For each combination of l1_ratio and alpha:
-    #   - Train ElasticNet model with max_iter=5000
-    #   - Calculate R² score on training data
-    #   - Store results
-    # - Return DataFrame with results
-    pass
-
-
 def create_r2_heatmap(results_df, l1_ratios, alphas, output_path=None):
-
-    results_df = results_df.pivot(index= 'alpha', columns= 'l1_ratio', values= 'r2_score')
-    results_df = results_df.to_numpy()
-
-    fig = plt.figure(figsize=(8, 6))
-    sns.heatmap(results_df, annot=True, fmt='.2f', cmap='viridis',
-                xticklabels=[str(val) for val in l1_ratios],
-                yticklabels=[str(val) for val in alphas],
-    )
-    plt.xlabel('L1 Ratio')
-    plt.ylabel('Alpha')
-
-    if output_path is not None:
-        plt.savefig(output_path)
-
-    return fig
-
 
     """
     Create a heatmap of R² scores across l1_ratio and alpha parameters.
@@ -109,18 +83,56 @@ def create_r2_heatmap(results_df, l1_ratios, alphas, output_path=None):
     matplotlib.figure.Figure
         The heatmap figure
     """
-    # TODO: Implement heatmap creation
-    # - Pivot results_df to create matrix with l1_ratio on x-axis, alpha on y-axis
-    # - Create heatmap using seaborn
-    # - Set labels: "L1 Ratio", "Alpha", "R² Score"
-    # - Add colorbar
-    # - Save to output_path if provided
-    # - Return figure object
-    pass
+    results_df = results_df.pivot(index= 'alpha', columns= 'l1_ratio', values= 'r2_score')
+    results_df = results_df.to_numpy()
+
+    fig = plt.figure(figsize=(8, 6))
+    sns.heatmap(results_df, annot=True, fmt='.2f', cmap='viridis',
+                xticklabels=[str(val) for val in l1_ratios],
+                yticklabels=[str(val) for val in alphas],
+    )
+    plt.xlabel('L1 Ratio')
+    plt.ylabel('Alpha')
+
+    if output_path is not None:
+        plt.savefig(output_path)
+
+    return fig
 
 
 def get_best_elasticnet_model(X_train, y_train, X_test, y_test, 
                                l1_ratios=None, alphas=None):
+    
+
+    """
+    Find and train the best ElasticNet model on test data.
+    
+    Parameters
+    ----------
+    X_train : np.ndarray or pd.DataFrame
+        Training features
+    y_train : np.ndarray or pd.Series
+        Training target
+    X_test : np.ndarray or pd.DataFrame
+        Test features
+    y_test : np.ndarray or pd.Series
+        Test target
+    l1_ratios : list, optional
+        L1 ratio values to test. Default: [0.1, 0.3, 0.5, 0.7, 0.9]
+    alphas : list, optional
+        Alpha values to test. Default: [0.001, 0.01, 0.1, 1.0, 10.0]
+        
+    Returns
+    -------
+    dict
+        Dictionary with keys:
+        - 'model': fitted ElasticNet model
+        - 'best_l1_ratio': best l1 ratio
+        - 'best_alpha': best alpha
+        - 'train_r2': R² on training data
+        - 'test_r2': R² on test data
+        - 'results_df': full results DataFrame
+    """
     
     reg_best = {}
 
@@ -157,43 +169,3 @@ def get_best_elasticnet_model(X_train, y_train, X_test, y_test,
 
     return reg_best
 
-    
-
-
-
-    """
-    Find and train the best ElasticNet model on test data.
-    
-    Parameters
-    ----------
-    X_train : np.ndarray or pd.DataFrame
-        Training features
-    y_train : np.ndarray or pd.Series
-        Training target
-    X_test : np.ndarray or pd.DataFrame
-        Test features
-    y_test : np.ndarray or pd.Series
-        Test target
-    l1_ratios : list, optional
-        L1 ratio values to test. Default: [0.1, 0.3, 0.5, 0.7, 0.9]
-    alphas : list, optional
-        Alpha values to test. Default: [0.001, 0.01, 0.1, 1.0, 10.0]
-        
-    Returns
-    -------
-    dict
-        Dictionary with keys:
-        - 'model': fitted ElasticNet model
-        - 'best_l1_ratio': best l1 ratio
-        - 'best_alpha': best alpha
-        - 'train_r2': R² on training data
-        - 'test_r2': R² on test data
-        - 'results_df': full results DataFrame
-    """
-    
-    
-    # TODO: Implement best model selection
-    # - Train models using train_elasticnet_grid
-    # - Select model with highest test R² (not training R²)
-    # - Return dictionary with best model and parameters
-    pass

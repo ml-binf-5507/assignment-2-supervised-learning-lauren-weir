@@ -24,29 +24,28 @@ Do NOT:
 
 **Did you use any AI tools to help with this assignment?**
 
-_____ Yes     _____ No
+___X__ Yes     _____ No
 
 **If yes, please tell us:**
 
 1. **What tools did you use?** (e.g., ChatGPT, Claude, GitHub Copilot)
-   https://stackoverflow.com/questions/48472156/binarizing-pandas-dataframe-column
+   Google AI and this link: https://stackoverflow.com/questions/48472156/binarizing-pandas-dataframe-column
    _________________________________________________________________
 
 2. **What specific things did you ask them to do?** (Be specific)
-   
-   _________________________________________________________________
-   
-   _________________________________________________________________
+   Asked how to binarize a Python column. In addition, I used Google AI several times for syntax help because I experienced some issues 
+   plotting the figures for the plot_comparison_curve function, inquiring about the difference in plotting when the axes are
+   provided versus when they are not, as well as what order instructions should go in for the legend.
+
 
 3. **How much of your final code came from AI vs. your own work?** (e.g., "AI gave me the formula, I wrote the loop" or "AI helped me debug an error")
    
-   _________________________________________________________________
-   
-   _________________________________________________________________
+   The stackoverflow link is the method I used to binarize the y column, I changed it so greater than 0 is 1, otherwise it's zero. For plotting, the methods are
+   from the AI, but the implementation for the purposes of the assignment are my own code.
 
 4. **Can you explain your code?** (Can you walk through what each function does and why you wrote it that way?)
    
-   _____ Yes, I can explain it well
+   __X___ Yes, I can explain it well
    
    _____ Mostly, but I have some questions
    
