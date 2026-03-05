@@ -29,7 +29,7 @@ _____ Yes     _____ No
 **If yes, please tell us:**
 
 1. **What tools did you use?** (e.g., ChatGPT, Claude, GitHub Copilot)
-   
+   https://stackoverflow.com/questions/48472156/binarizing-pandas-dataframe-column
    _________________________________________________________________
 
 2. **What specific things did you ask them to do?** (Be specific)
